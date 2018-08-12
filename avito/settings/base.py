@@ -1,7 +1,8 @@
 import os
 from my_settings import *
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 # You should set up your own settings in file "my_settings.py",
 # which is located in root directory (next to manage.py file).
