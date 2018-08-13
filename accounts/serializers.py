@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from .models import UserProfile
 from rest_framework.serializers import ModelSerializer, ValidationError
 
@@ -53,4 +54,20 @@ class UserProfileLoginSerializer(ModelSerializer):
                         }
 
     def validate(self, data):
+        user_obj = None
+        username = data.get("username", None)
+        password = data.get("password")
+        if not username:
+            raise ValidationError("A username is required to login.")
+
+        user = User.objects.filter(Q(username=username)).distinct()
+        if user.exists() and user.count() == 1:
+            user_obj = user.first()
+        else:
+            raise ValidationError("Not valid username")
+
+        if user_obj:
+            if not user_obj.check_password(password):
+                raise ValidationError("Not valid password")
+
         return data
