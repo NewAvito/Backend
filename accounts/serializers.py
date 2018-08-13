@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .models import UserProfile
-from rest_framework.serializers import ModelSerializer, ValidationError
+from rest_framework.serializers import ModelSerializer, ValidationError, CharField
 
 User = get_user_model()
 
@@ -43,11 +43,13 @@ class UserProfileCreateSerializer(ModelSerializer):
 
 
 class UserProfileLoginSerializer(ModelSerializer):
+    username = CharField(required=False, allow_blank=True)
+
     class Meta:
         model = UserProfile
         fields = [
             'username',
-            'password',
+            'password'
         ]
         extra_kwargs = {"password":
                             {"write_only": True}

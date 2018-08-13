@@ -14,6 +14,7 @@ User = get_user_model()
 
 
 class UserProfileCreateAPIView(CreateAPIView):
+    permission_classes = [AllowAny]
     serializer_class = UserProfileCreateSerializer
     queryset = UserProfile.objects.all()
 
