@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
-from .serializers import UserCreateSerializer
 from rest_framework.generics import CreateAPIView
+
+from .models import UserProfile
+from .serializers import UserProfileCreateSerializer
 
 
 User = get_user_model()
 
 
-class UserCreateAPIView(CreateAPIView):
-    serializer_class = UserCreateSerializer
-    queryset = User.objects.all()
+class UserProfileCreateAPIView(CreateAPIView):
+    serializer_class = UserProfileCreateSerializer
+    queryset = UserProfile.objects.all()
 
