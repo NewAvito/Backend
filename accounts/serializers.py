@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 from django.db.models import Q
 from .models import UserProfile
 from rest_framework.serializers import (
@@ -79,4 +80,25 @@ class UserProfileLoginSerializer(ModelSerializer):
             if not user_obj.check_password(password):
                 raise ValidationError("Not valid password")
 
+        return data
+
+
+class ChangePasswordSerializer(ModelSerializer):
+
+    password = CharField(required=True)
+    new_password = CharField(required=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'password',
+            'new_password'
+        ]
+
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
+    def validate_new_password(self, data):
+        validate_password(data)
         return data
