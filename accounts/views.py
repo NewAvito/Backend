@@ -5,8 +5,10 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
 from .models import UserProfile
-from .serializers import UserProfileCreateSerializer, \
+from .serializers import (
+    UserProfileCreateSerializer,
     UserProfileLoginSerializer
+)
 
 from rest_framework.permissions import AllowAny
 
@@ -23,7 +25,7 @@ class UserProfileLoginAPIView(APIView):
     permission_classes = [AllowAny]
     serializer_class = UserProfileLoginSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         data = request.data
         serializer = UserProfileLoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):

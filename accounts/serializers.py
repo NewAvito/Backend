@@ -1,7 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .models import UserProfile
-from rest_framework.serializers import ModelSerializer, ValidationError, CharField
+from rest_framework.serializers import (
+    ModelSerializer,
+    ValidationError,
+    CharField
+)
 
 User = get_user_model()
 
@@ -43,13 +47,15 @@ class UserProfileCreateSerializer(ModelSerializer):
 
 
 class UserProfileLoginSerializer(ModelSerializer):
-    username = CharField(required=False, allow_blank=True)
+    token = CharField(allow_blank=True, read_only=True)
+    username = CharField(required=True, allow_blank=False)
 
     class Meta:
         model = UserProfile
         fields = [
             'username',
-            'password'
+            'password',
+            'token',
         ]
         extra_kwargs = {"password":
                             {"write_only": True}
@@ -57,12 +63,13 @@ class UserProfileLoginSerializer(ModelSerializer):
 
     def validate(self, data):
         user_obj = None
-        username = data.get("username", None)
+        username = data.get("username")
         password = data.get("password")
         if not username:
             raise ValidationError("A username is required to login.")
 
         user = User.objects.filter(Q(username=username)).distinct()
+
         if user.exists() and user.count() == 1:
             user_obj = user.first()
         else:
