@@ -38,7 +38,7 @@ class UserProfileLoginAPIView(APIView):
 class ChangePasswordAPIView(UpdateAPIView):
     serializer_class = ChangePasswordSerializer
     model = UserProfile
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -54,6 +54,6 @@ class ChangePasswordAPIView(UpdateAPIView):
                                 status=HTTP_400_BAD_REQUEST)
             obj.set_password(serializer.data.get("new_password"))
             obj.save()
-            return Response(status=HTTP_200_OK)
+            return Response("Your password is changed.", status=HTTP_200_OK)
 
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
