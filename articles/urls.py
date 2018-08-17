@@ -1,9 +1,7 @@
-# from django.urls import path
-# from .views import (
-#     ArticleListAPIView,
-#     )
-#
-# urlpatterns = [
-#     path('', ArticleListAPIView.as_view(), name='list'),
-#
-# ]
+from django.urls import path, include
+from articles.views import *
+
+urlpatterns = [
+    path('api/', ArticlesView.as_view()),
+    path('cat/', get_category)
+]
