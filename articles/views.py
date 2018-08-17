@@ -18,15 +18,19 @@ class ArticlesView(APIView):
                        "FROM avito.articles AS art " +
                        "INNER JOIN avito.auth_user AS us ON art.user_id = us.id " +
                        "INNER JOIN avito.category AS cat ON cat.id = art.category_id " +
-                       "INNER JOIN avito.user_likes AS lk ON lk.id = art.likes_id " +
+                       "LEFT JOIN avito.user_likes AS lk ON lk.id = art.likes_id " +
                        "AND art.id = lk.id_article ")
 
         a = cursor.fetchall()
         str = []
         for i in a:
+            if i[6]:
+                num = i[6]
+            else:
+                num = 0
             str.append({"title": i[0], "descrition": i[1], "cost": i[2],
                         "location": i[3], "username": i[4], "category": i[5],
-                        "like": i[6]})
+                        "like": num})
         return Response(str)
 
 
