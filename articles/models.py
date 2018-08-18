@@ -13,6 +13,8 @@ class Articles(models.Model):
                                  on_delete=models.CASCADE)
     location = models.CharField(max_length=200)
     likes = models.ForeignKey('User_likes', on_delete=models.CASCADE)
+    numphone = models.TextField(blank=True, null=True, default="") #мобильный номер телефона
+    date = models.DateField(blank=True, null=True, default="")
     # image = models.ImageField(upload_to='smth/', blank=True, null=True)
 
     class Meta:
